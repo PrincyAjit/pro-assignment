@@ -1,3 +1,4 @@
+// #region Library imports
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
@@ -6,6 +7,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+// #endregion Library imports
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiPaper-root': {

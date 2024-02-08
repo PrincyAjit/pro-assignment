@@ -10,10 +10,7 @@ const fetchData = async (url, data = null, method = 'GET') => {
     headers,
   };
 
-  if (data) {
-    console.log({ a: JSON.stringify(data) });
-    options.body = JSON.stringify(data);
-  }
+  if (data) options.body = JSON.stringify(data);
 
   try {
     const response = await fetch(`${BASE_URL}${url}`, options);

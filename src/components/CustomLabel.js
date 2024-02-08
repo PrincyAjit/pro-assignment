@@ -1,8 +1,10 @@
+// #region Library imports
 import React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import { createUseStyles } from 'react-jss';
+// #endregion Library imports
 
+// #region Styling
 const useStyles = createUseStyles((theme) => ({
   labelRoot: {
     fontFamily: 'Montserrat',
@@ -12,6 +14,7 @@ const useStyles = createUseStyles((theme) => ({
     marginBottom: '12px',
   },
 }));
+// #endregion Styling
 
 const CustomLabel = (props) => {
   const classes = useStyles();

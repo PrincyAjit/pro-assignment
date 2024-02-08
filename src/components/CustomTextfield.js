@@ -1,13 +1,22 @@
+// #region Imports
+// #region Library imports
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { FormControl, FormHelperText, OutlinedInput } from '@mui/material';
 import { createUseStyles } from 'react-jss';
 import clsx from 'clsx';
+// #endregion Library imports
 
+// #region Custom/User defined components imports
 import CustomLabel from './CustomLabel';
+// #endregion Custom/User defined components imports
 
+// #region utilities imports
 import { isFunction } from '../utils/utilFunctions';
+// #endregion utilities imports
+// #endregion Imports
 
+// #region Styling
 const useStyles = createUseStyles((theme) => ({
   formControl: {
     '& .MuiOutlinedInput-notchedOutline': {
@@ -28,18 +37,25 @@ const useStyles = createUseStyles((theme) => ({
     },
   },
   helperText: {
-    marginLeft: 0,
+    marginLeft: '0 !important',
   },
   endAdornmentIcon: {
     cursor: 'pointer',
   },
 }));
+// #endregion Styling
 
-const getErrorMessage = (type, value, label) => {
+const getErrorMessage = (type, value, label, min, max) => {
   const labelOrTypeInMessage = label ? label?.toLowerCase() : type;
   const emptyValueMessage = `Please enter the ${labelOrTypeInMessage}.`;
   // Add validations for other types as per requirement.
-  if (value === '') return emptyValueMessage;
+  if (type === 'number') {
+    if (min && value < min)
+      return `Please enter a value greater than ${min - 1}.`;
+    if (max && value > max) return `Please enter a value lesser than ${max}`;
+  }
+
+  if (!Boolean(value)) return emptyValueMessage;
   else return null;
 };
 
@@ -104,7 +120,13 @@ const CustomTextfield = (props) => {
   const handleChange = (event) => {
     let updatedValue = event.target.value;
     if (type === 'number') updatedValue = parseInt(updatedValue);
-    const updatedErrorMessage = getErrorMessage(type, updatedValue, label);
+    const updatedErrorMessage = getErrorMessage(
+      type,
+      updatedValue,
+      label,
+      inputProps?.min,
+      inputProps?.max
+    );
     setValue(updatedValue);
     setErrorMessage(updatedErrorMessage);
     if (isFunction(onChange)) onChange(id, updatedValue);
@@ -113,10 +135,6 @@ const CustomTextfield = (props) => {
   useEffect(() => {
     setValue(valueReceived);
   }, [valueReceived]);
-
-  useEffect(() => {
-    console.log({ value });
-  }, [value]);
 
   return (
     <div className={clsx(['w-full', customClasses?.root])}>

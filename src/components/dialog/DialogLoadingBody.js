@@ -1,11 +1,17 @@
+// #region Imports
+// #region Library imports
 import React from 'react';
 import PropTypes from 'prop-types';
 import { createUseStyles } from 'react-jss';
-
 import { CircularProgress } from '@mui/material';
+// #endregion Library imports
 
+// #region utilities imports
 import { messages } from '../../utils/constants';
+// #endregion utilities imports
+// #endregion Imports
 
+// #region Styling
 const useStyles = createUseStyles((theme) => ({
   body: {
     boxSizing: 'content-box',
@@ -20,11 +26,13 @@ const useStyles = createUseStyles((theme) => ({
     justifyContent: 'center',
     rowGap: '12px',
     marginBottom: '33px',
+    fontSize: '24px',
   },
   loading: {
     marginBottom: '12px',
   },
 }));
+// #endregion Styling
 
 /**
  * @component - Common dialog loading body component.
@@ -36,7 +44,7 @@ const DialogLoadingBody = () => {
     <div className={classes.body}>
       <div className={classes.content}>
         <CircularProgress className={classes.loading} />
-        <div>{messages.ACTION_IN_PROGRESS}</div>
+        <p>{messages.ACTION_IN_PROGRESS}</p>
       </div>
     </div>
   );

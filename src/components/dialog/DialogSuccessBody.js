@@ -1,7 +1,10 @@
+// #region Library imports
 import PropTypes from 'prop-types';
 import { createUseStyles } from 'react-jss';
 import { Typography } from '@mui/material';
+// #endregion Library imports
 
+// #region Styling
 const useStyles = createUseStyles((theme) => ({
   body: {
     boxSizing: 'content-box',
@@ -27,15 +30,13 @@ const useStyles = createUseStyles((theme) => ({
     marginBottom: '24px',
   },
   contentTitle: {
-    fontSize: '24px',
-    fontWeight: 600,
-    marginBottom: '12px',
+    fontSize: '22px !important',
   },
   contentDesc: {
-    fontSize: '14px',
-    fontWeight: 400,
+    fontSize: '14px !important',
   },
 }));
+// #endregion Styling
 
 /**
  * @component - Common dialog success body component.
@@ -54,7 +55,7 @@ const DialogSuccessBody = ({ content }) => {
     <div className={classes.body}>
       <div className={classes.content}>
         <div className={classes.successIconDiv}>
-          <img src="/success-check.svg" />
+          <img src="/success-check.svg" alt="check-icon" />
         </div>
         <Typography className={classes.contentTitle}>
           {content?.title}

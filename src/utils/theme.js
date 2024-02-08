@@ -4,10 +4,7 @@ const theme = {
       black: '#000',
       white: '#fff',
     },
-    primary: {
-      main: '#1c81ff', // blue
-      dark: '#1E5DFF',
-    },
+    primary: {},
     secondary: {
       main: '#717171', // greyish
       dark: '#363636', // dark grey
@@ -34,5 +31,5 @@ const theme = {
     },
   },
 };
-console.log({ theme });
+
 export default theme;

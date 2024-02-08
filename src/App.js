@@ -6,6 +6,7 @@ import Homepage from './pages/Homepage';
 import Navbar from './components/Navbar';
 
 import theme from './utils/theme';
+import './App.css';
 
 const useStyles = createUseStyles((theme) => ({
   root: {

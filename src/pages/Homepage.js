@@ -1,3 +1,5 @@
+// #region Imports
+// #region Library imports
 import { useState, useEffect } from 'react';
 import { createUseStyles } from 'react-jss';
 import { styled } from '@mui/material/styles';
@@ -9,37 +11,33 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Tooltip,
   Typography,
 } from '@mui/material';
 import { tableCellClasses } from '@mui/material/TableCell';
 import clsx from 'clsx';
-
 import ContentLoader from 'react-content-loader';
 import { Alert, Button } from '@mui/material';
+// #endregion Library imports
 
-import CustomTextfield from '../components/CustomTextfield';
-import CustomSelect from '../components/CustomSelect';
+// #region Custom/User defined components imports
 import CustomDialog from '../components/dialog/CustomDialog';
 import DialogLoadingBody from '../components/dialog/DialogLoadingBody';
 import DialogSuccessBody from '../components/dialog/DialogSuccessBody';
 import DialogErrorBody from '../components/dialog/DialogErrorBody';
+import { AddOrEditProduct, DeleteProduct } from '../components/ProductActions';
+// #endregion Custom/User defined components imports
 
-import {
-  getAllProducts,
-  addProduct,
-  editProduct,
-  deleteProduct,
-} from '../api/endpoints/product';
+// #region api imports
+import { getAllProducts } from '../api/endpoints/product';
+// #endregion api imports
 
-import {
-  isValidArray,
-  isValidObject,
-  isValidString,
-  capitalizeFirstLetter,
-} from '../utils/utilFunctions';
+// #region utilities imports
+import { isValidArray, capitalizeFirstLetter } from '../utils/utilFunctions';
 import { messages } from '../utils/constants';
+// #endregion utilities imports
+// #endregion Imports
 
+// #region Styling
 const useStyles = createUseStyles((theme) => ({
   container: {
     padding: '24px',
@@ -51,6 +49,7 @@ const useStyles = createUseStyles((theme) => ({
     marginBottom: '24px',
     display: 'flex',
     columnGap: '24px',
+    flexWrap: 'wrap',
   },
   addOrEditProductDivElement: {
     flex: 1,
@@ -58,7 +57,9 @@ const useStyles = createUseStyles((theme) => ({
   buttonText: {
     fontWeight: '600 !important',
   },
-  addProductButtonDiv: {},
+  addProductButtonDiv: {
+    textAlign: 'center',
+  },
   outerAddProductButton: {
     float: 'right',
     marginBottom: '16px !important',
@@ -67,7 +68,11 @@ const useStyles = createUseStyles((theme) => ({
     maxHeight: '500px',
     overflow: 'scroll',
   },
+  actionDialogTitle: {
+    fontWeight: '600 !important',
+  },
 }));
+// #endregion Styling
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -92,177 +97,11 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const AddOrEditProduct = ({
-  actionType,
-  productEntry,
-  setProductEntry,
-  productNames,
-  setActionLoading,
-  setActionError,
-  setActionCompleted,
-}) => {
-  const classes = useStyles();
-
-  const activeDropdownData = ['Yes', 'No'];
-  const initialNewProductInfo = {
-    ProductName: '',
-    Quantity: '',
-    IsActive: 'Yes',
-  };
-  const isEditAction = actionType === 'edit';
-  const [productDetails, setProductDetails] = useState({
-    ...initialNewProductInfo,
-  });
-  const [productNameExists, setProductNameExists] = useState(false); // Added this validation since api does not allow same product names.
-  const [enableAddProductButton, setEnableAddProductButton] = useState(false);
-
-  const onProductDetailsChange = (id, value) => {
-    if (id === 'ProductName') {
-      const productNameExists = productNames.includes(value);
-      setProductNameExists(productNameExists);
-    }
-    setProductDetails((prevDetails) => ({ ...prevDetails, [id]: value }));
-  };
-
-  const validateProductInfo = () => {
-    const isValidProductName =
-      isValidString(productDetails?.ProductName) && !productNameExists;
-    if (!isValidProductName) {
-      setEnableAddProductButton(false);
-      return;
-    }
-    const isValidQuantity = productDetails?.Quantity > 0;
-    if (!isValidQuantity) {
-      setEnableAddProductButton(false);
-      return;
-    }
-    const isValidActiveState = isValidString(productDetails?.IsActive);
-    setEnableAddProductButton(isValidActiveState);
-  };
-
-  const onActionClick = () => {
-    const apiToCall = isEditAction ? editProduct : addProduct;
-    const apiData = {
-      productName: productDetails?.ProductName,
-      quantity: productDetails?.Quantity,
-      isActive: productDetails?.IsActive === 'Yes',
-    };
-    if (isEditAction) apiData.productId = productEntry?.ProductId;
-    console.log({ apiData });
-    setActionLoading(true);
-    apiToCall(apiData)
-      .then((response) => {
-        setProductEntry({ ...productDetails }); // setting back at parent level.
-        setActionCompleted(true);
-        setActionLoading(false);
-      })
-      .catch((error) => {
-        setActionError(true);
-        setActionLoading(false);
-      });
-  };
-
-  useEffect(() => {
-    console.log({ productDetails });
-    validateProductInfo();
-  }, [productDetails]);
-
-  useEffect(() => {
-    console.log({ productEntry });
-    if (isValidObject(productEntry))
-      setProductDetails({
-        ...productEntry,
-        IsActive: productEntry?.IsActive ? 'Yes' : 'No',
-      });
-  }, [productEntry]);
-
-  return (
-    <div className={classes.addOrEditProductDiv}>
-      <CustomTextfield
-        id="ProductName"
-        label="product name"
-        onChange={onProductDetailsChange}
-        value={productDetails?.ProductName}
-        customClasses={{ root: classes.addOrEditProductDivElement }}
-        customErrorMessage={
-          productNameExists ? messages.UNIQUE_PRODUCT_NAME : ''
-        }
-      />
-      <CustomTextfield
-        id="Quantity"
-        label="quantity"
-        type="number"
-        value={productDetails?.Quantity}
-        onChange={onProductDetailsChange}
-        inputProps={{ min: 0 }}
-        customClasses={{ root: classes.addOrEditProductDivElement }}
-      />
-      <CustomSelect
-        id="IsActive"
-        label="is active"
-        data={activeDropdownData}
-        value={productDetails?.IsActive}
-        onChange={onProductDetailsChange}
-        customClasses={{ root: classes.addOrEditProductDivElement }}
-      />
-      <Tooltip
-        title={!enableAddProductButton ? 'Enter all product details.' : null}
-      >
-        {/* Added extra div as tooltip does not work as expected directly on buttons */}
-        <div className={classes.addProductButtonDiv}>
-          <Button
-            variant="contained"
-            className={clsx([classes.buttonText, classes.addProductButton])}
-            disabled={!enableAddProductButton}
-            onClick={onActionClick}
-          >
-            {isEditAction ? 'Edit' : 'Add'} Product
-          </Button>
-        </div>
-      </Tooltip>
-    </div>
-  );
-};
-
-const DeleteProduct = ({
-  productEntry,
-  setActionLoading,
-  setActionError,
-  setActionCompleted,
-  onCloseActionDialog,
-}) => {
-  const onDeleteProduct = () => {
-    setActionLoading(true);
-    deleteProduct({ productId: productEntry?.ProductId })
-      .then((response) => {
-        setActionCompleted(true);
-        setActionLoading(false);
-      })
-      .catch((error) => {
-        console.log('delete error', { error });
-        setActionError(true);
-        setActionLoading(false);
-      });
-  };
-  return (
-    <div>
-      <h4>
-        Are you sure you want to delete <b>{productEntry?.ProductName}</b> ?
-      </h4>
-      <div>
-        <Button onClick={onCloseActionDialog}>No</Button>
-        <Button onClick={onDeleteProduct}>Yes</Button>
-      </div>
-    </div>
-  );
-};
-
 const ActionDialog = ({
   actionDialogOpen,
-  actionType,
   onCloseActionDialog,
+  actionType,
   actionProductData,
-  setActionProductData,
   productNames,
   onActionSuccess,
 }) => {
@@ -273,8 +112,9 @@ const ActionDialog = ({
   const [actionCompleted, setActionCompleted] = useState(false);
 
   const Title = () => {
+    const classes = useStyles();
     return (
-      <Typography variant="h5">
+      <Typography variant="h6" className={classes.actionDialogTitle}>
         {actionLoading || actionError || actionCompleted ? (
           <>
             {actionLoading && 'Action in progress'}
@@ -310,6 +150,7 @@ const ActionDialog = ({
           {isDeleteAction ? (
             <DeleteProduct
               productEntry={actionProductData}
+              onActionSuccess={onActionSuccess}
               setActionLoading={setActionLoading}
               setActionError={setActionError}
               setActionCompleted={setActionCompleted}
@@ -319,7 +160,7 @@ const ActionDialog = ({
             <AddOrEditProduct
               actionType={actionType}
               productEntry={actionProductData}
-              setProductEntry={setActionProductData}
+              onActionSuccess={onActionSuccess}
               productNames={productNames}
               setActionLoading={setActionLoading}
               setActionError={setActionError}
@@ -329,10 +170,6 @@ const ActionDialog = ({
         </>
       );
   };
-
-  useEffect(() => {
-    if (actionCompleted) onActionSuccess();
-  }, [actionCompleted]);
 
   useEffect(() => {
     if (actionDialogOpen) {
@@ -355,19 +192,23 @@ const ActionDialog = ({
 };
 
 const Homepage = () => {
+  // #region library based variables and data constants.
   const classes = useStyles();
-
   const columns = ['Product Name', 'Quantity', 'Is Active', 'Edit', 'Delete'];
+  // #endregion library based variables and data constants.
 
+  // #region state declarations.
   let [rowData, setRowData] = useState([]);
+  let [productNames, setProductNames] = useState([]);
   const [dataLoading, setDataLoading] = useState(true);
   const [dataError, setDataError] = useState(false);
-
-  const [productNames, setProductNames] = useState([]);
+  const [refetch, setRefetch] = useState(false);
   const [actionDialogOpen, setActionDialogOpen] = useState(false);
   const [actionType, setActionType] = useState('');
   const [actionProductData, setActionProductData] = useState({});
+  // #endregion state declarations.
 
+  // #region function declarations.
   const onProductActionClick = (actionType, actionData) => {
     setActionType(actionType);
     setActionProductData(actionData);
@@ -380,24 +221,38 @@ const Homepage = () => {
     setActionDialogOpen(false);
   };
 
-  const onActionSuccess = () => {
+  const onActionSuccess = (updatedProductEntry) => {
+    let updatedRowData = [...rowData];
+    let updatedProductNames = [...productNames];
     if (actionType === 'edit') {
-      rowData = rowData.map((entry) =>
-        entry?.ProductId === actionProductData?.ProductId
-          ? { ...entry, ...actionProductData }
+      updatedRowData = updatedRowData.map((entry) =>
+        entry?.ProductId === updatedProductEntry?.ProductId
+          ? { ...entry, ...updatedProductEntry }
           : entry
       );
-    } else if (actionType === 'add') rowData.unshift({ ...actionProductData });
-    else {
-      rowData = rowData.filter(
+      updatedProductNames = updatedProductNames?.filter(
+        (productName) => productName !== actionProductData?.ProductName
+      );
+      updatedProductNames.push(updatedProductEntry?.ProductName);
+    } else if (actionType === 'delete') {
+      updatedRowData = updatedRowData.filter(
         (entry) => entry?.ProductId !== actionProductData?.ProductId
       );
+      updatedProductNames = updatedProductNames?.filter(
+        (productName) => productName !== actionProductData?.ProductName
+      );
+    } else {
+      setRefetch((prevState) => !prevState); // Since we need productID to edit or delete, we do a refetch in case of add action.
     }
 
-    setRowData(rowData);
+    setRowData(updatedRowData);
+    setProductNames(updatedProductNames);
   };
+  // #endregion function declarations.
 
+  // #region useEffects.
   useEffect(() => {
+    setDataLoading(true);
     getAllProducts()
       .then((response) => {
         if (isValidArray(response)) {
@@ -414,7 +269,16 @@ const Homepage = () => {
         setDataError(true);
         setDataLoading(false);
       });
-  }, []);
+  }, [refetch]);
+
+  useEffect(() => {
+    console.log({ rowData });
+  }, [rowData]);
+
+  useEffect(() => {
+    console.log({ productNames });
+  }, [productNames]);
+  // #endregion useEffects.
 
   return (
     <div className={classes.container}>
@@ -510,10 +374,9 @@ const Homepage = () => {
       </>
       <ActionDialog
         actionDialogOpen={actionDialogOpen}
-        actionType={actionType}
         onCloseActionDialog={onCloseActionDialog}
+        actionType={actionType}
         actionProductData={actionProductData}
-        setActionProductData={setActionProductData}
         productNames={productNames}
         onActionSuccess={onActionSuccess}
       />
