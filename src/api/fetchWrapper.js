@@ -11,6 +11,7 @@ const fetchData = async (url, data = null, method = 'GET') => {
   };
 
   if (data) {
+    console.log({ a: JSON.stringify(data) });
     options.body = JSON.stringify(data);
   }
 
