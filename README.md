@@ -1,6 +1,7 @@
 # Online Retail Shop Assignment
 
 This application is built using ReactJS. It lists a set of available products in the store and allows the admin to add,edit,delete products with simple styling. Necessary validations have been handled.
+
 Hosted app URL- https://princyajit.github.io/pro-assignment/
 
 ### Libraries Used:
