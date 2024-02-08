@@ -71,6 +71,9 @@ const useStyles = createUseStyles((theme) => ({
   actionDialogTitle: {
     fontWeight: '600 !important',
   },
+  actionName: {
+    textTransform: 'capitalize',
+  },
 }));
 // #endregion Styling
 
@@ -122,7 +125,9 @@ const ActionDialog = ({
             {actionCompleted && 'Changes Saved'}
           </>
         ) : (
-          <>{capitalizeFirstLetter(actionType)} Product</>
+          <>
+            <span className={classes.actionName}>{actionType}</span> Product
+          </>
         )}
       </Typography>
     );
@@ -321,7 +326,10 @@ const Homepage = () => {
                       <TableHead>
                         <TableRow>
                           {columns.map((columnName) => (
-                            <StyledTableCell className={classes.columnName}>
+                            <StyledTableCell
+                              className={classes.columnName}
+                              key={columnName}
+                            >
                               {columnName}
                             </StyledTableCell>
                           ))}

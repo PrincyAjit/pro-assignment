@@ -50,7 +50,6 @@ BootstrapDialogTitle.propTypes = {
 
 export default function CustomDialog({
   open,
-  setOpen,
   noCloseAction = false, // to hide close icon and prevent close action.-> Useful in loading based dialogs where we keep the dialog open unless action is complete,once its complete pass open prop as false to this component.
   title,
   content,
@@ -65,6 +64,7 @@ export default function CustomDialog({
       aria-labelledby="customized-dialog-title"
       open={open}
       maxWidth={false}
+      onClose={handleClose}
     >
       <BootstrapDialogTitle
         id="customized-dialog-title"

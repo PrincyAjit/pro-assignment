@@ -4,6 +4,8 @@ import { createUseStyles } from 'react-jss';
 import { Typography } from '@mui/material';
 // #endregion Library imports
 
+import successIcon from '../../images/success-check.svg';
+
 // #region Styling
 const useStyles = createUseStyles((theme) => ({
   body: {
@@ -55,7 +57,7 @@ const DialogSuccessBody = ({ content }) => {
     <div className={classes.body}>
       <div className={classes.content}>
         <div className={classes.successIconDiv}>
-          <img src="/success-check.svg" alt="check-icon" />
+          <img src={successIcon} alt="check-icon" />
         </div>
         <Typography className={classes.contentTitle}>
           {content?.title}

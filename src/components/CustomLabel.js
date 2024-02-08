@@ -1,6 +1,7 @@
 // #region Library imports
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+
 import { createUseStyles } from 'react-jss';
 // #endregion Library imports
 
@@ -16,12 +17,14 @@ const useStyles = createUseStyles((theme) => ({
 }));
 // #endregion Styling
 
-const CustomLabel = (props) => {
+const CustomLabel = ({ label }) => {
   const classes = useStyles();
-  const { label } = props;
+
   return <div className={classes.labelRoot}>{label}</div>;
 };
 
-CustomLabel.propTypes = {};
+CustomLabel.propTypes = {
+  label: PropTypes.any,
+};
 
 export default CustomLabel;

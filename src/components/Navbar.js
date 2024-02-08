@@ -1,8 +1,9 @@
 // #region Library imports
 import React from 'react';
-import PropTypes from 'prop-types';
 import { createUseStyles } from 'react-jss';
 // #endregion Library imports
+
+import logo from '../images/logo.png';
 
 // #region Styling
 const useStyles = createUseStyles((theme) => ({
@@ -19,15 +20,13 @@ const useStyles = createUseStyles((theme) => ({
 }));
 // #endregion Styling
 
-const Navbar = (props) => {
+const Navbar = () => {
   const classes = useStyles();
   return (
     <div className={classes.container}>
-      <img src="/logo.png" alt="logo" className={classes.logo} />
+      <img src={logo} alt="logo" className={classes.logo} />
     </div>
   );
 };
-
-Navbar.propTypes = {};
 
 export default Navbar;

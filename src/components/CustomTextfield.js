@@ -96,23 +96,22 @@ const getErrorMessage = (type, value, label, min, max) => {
  *
  * @returns {ReactElement} The rendered CustomTextField component.
  */
-const CustomTextfield = (props) => {
+const CustomTextfield = ({
+  id,
+  value: valueReceived,
+  label,
+  placeholder,
+  disabled,
+  onChange,
+  type,
+  inputProps,
+  multiline,
+  minRows,
+  customClasses,
+  customErrorMessage,
+}) => {
   const classes = useStyles();
-  let {
-    id,
-    value: valueReceived,
-    label,
-    placeholder,
-    disabled,
-    onChange,
-    type,
-    inputProps,
-    multiline,
-    minRows,
-    customClasses,
-    customErrorMessage,
-  } = props;
-  console.log('dummy console');
+
   type = type ?? 'text';
   const [value, setValue] = useState();
   const [errorMessage, setErrorMessage] = useState();
