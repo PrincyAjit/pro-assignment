@@ -21,7 +21,7 @@ function App() {
     <div className={classes.root}>
       <ThemeProvider theme={theme}>
         <Navbar />
-        <BrowserRouter basename="/">
+        <BrowserRouter basename="/pro-assignment">
           <Routes>
             <Route path="/" element={<Homepage />} />
           </Routes>
