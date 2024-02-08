@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ThemeProvider, createUseStyles } from 'react-jss';
-import { SnackbarProvider } from 'notistack';
 
 import Homepage from './pages/Homepage';
 import Navbar from './components/Navbar';
@@ -20,16 +19,14 @@ function App() {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <SnackbarProvider>
-        <ThemeProvider theme={theme}>
-          <Navbar />
-          <BrowserRouter basename="/">
-            <Routes>
-              <Route path="/" element={<Homepage />} />
-            </Routes>
-          </BrowserRouter>
-        </ThemeProvider>
-      </SnackbarProvider>
+      <ThemeProvider theme={theme}>
+        <Navbar />
+        <BrowserRouter basename="/">
+          <Routes>
+            <Route path="/" element={<Homepage />} />
+          </Routes>
+        </BrowserRouter>
+      </ThemeProvider>
     </div>
   );
 }
