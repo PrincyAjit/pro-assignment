@@ -32,7 +32,7 @@ import { getAllProducts } from '../api/endpoints/product';
 // #endregion api imports
 
 // #region utilities imports
-import { isValidArray, capitalizeFirstLetter } from '../utils/utilFunctions';
+import { isValidArray } from '../utils/utilFunctions';
 import { messages } from '../utils/constants';
 // #endregion utilities imports
 // #endregion Imports
@@ -117,7 +117,11 @@ const ActionDialog = ({
   const Title = () => {
     const classes = useStyles();
     return (
-      <Typography variant="h6" className={classes.actionDialogTitle}>
+      <Typography
+        variant="h6"
+        component="span"
+        className={classes.actionDialogTitle}
+      >
         {actionLoading || actionError || actionCompleted ? (
           <>
             {actionLoading && 'Action in progress'}
@@ -255,7 +259,6 @@ const Homepage = () => {
   };
   // #endregion function declarations.
 
-  // #region useEffects.
   useEffect(() => {
     setDataLoading(true);
     getAllProducts()
@@ -275,15 +278,6 @@ const Homepage = () => {
         setDataLoading(false);
       });
   }, [refetch]);
-
-  useEffect(() => {
-    console.log({ rowData });
-  }, [rowData]);
-
-  useEffect(() => {
-    console.log({ productNames });
-  }, [productNames]);
-  // #endregion useEffects.
 
   return (
     <div className={classes.container}>

@@ -102,10 +102,6 @@ export const AddOrEditProduct = ({
     }
     const isValidQuantity = productDetails?.Quantity > 0;
     setEnableAddProductButton(isValidQuantity);
-    if (!isValidQuantity) {
-      setEnableAddProductButton(false);
-      return;
-    }
   };
 
   const onActionClick = () => {
@@ -207,7 +203,6 @@ export const DeleteProduct = ({
         setActionLoading(false);
       })
       .catch((error) => {
-        console.log('delete error', { error });
         setActionError(true);
         setActionLoading(false);
       });

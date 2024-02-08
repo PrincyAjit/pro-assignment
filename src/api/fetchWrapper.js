@@ -22,7 +22,6 @@ const fetchData = async (url, data = null, method = 'GET') => {
       throw new Error(`Request failed with status: ${response.status}`);
     }
   } catch (error) {
-    console.error('Fetch Error:', error);
     throw new Error('Network error occurred');
   }
 };

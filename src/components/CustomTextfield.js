@@ -169,6 +169,24 @@ const CustomTextfield = ({
   );
 };
 
-CustomTextfield.propTypes = {};
+CustomTextfield.propTypes = {
+  customClasses: PropTypes.shape({
+    root: PropTypes.any
+  }),
+  customErrorMessage: PropTypes.any,
+  disabled: PropTypes.any,
+  id: PropTypes.any,
+  inputProps: PropTypes.shape({
+    max: PropTypes.any,
+    min: PropTypes.any
+  }),
+  label: PropTypes.any,
+  minRows: PropTypes.any,
+  multiline: PropTypes.any,
+  onChange: PropTypes.func,
+  placeholder: PropTypes.any,
+  type: PropTypes.string,
+  value: PropTypes.any
+}
 
 export default CustomTextfield;

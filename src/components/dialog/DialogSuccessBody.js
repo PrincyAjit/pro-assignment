@@ -72,6 +72,11 @@ const DialogSuccessBody = ({ content }) => {
   );
 };
 
-DialogSuccessBody.propTypes = {};
+DialogSuccessBody.propTypes = {
+  content: PropTypes.shape({
+    desc: PropTypes.any,
+    title: PropTypes.any,
+  }),
+};
 
 export default DialogSuccessBody;
