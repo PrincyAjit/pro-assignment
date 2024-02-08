@@ -112,7 +112,7 @@ const CustomTextfield = (props) => {
     customClasses,
     customErrorMessage,
   } = props;
-
+  console.log('dummy console');
   type = type ?? 'text';
   const [value, setValue] = useState();
   const [errorMessage, setErrorMessage] = useState();
